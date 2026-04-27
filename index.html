@@ -72,15 +72,15 @@ text-align:center;padding:120px 24px 60px;
 .eyebrow{
 display:inline-flex;align-items:center;gap:8px;padding:7px 18px;
 border-radius:999px;border:1px solid rgba(168,85,247,0.35);
-background:rgba(124,58,237,0.35);font-weight:300;font-size:11px;
-letter-spacing:0.16em;text-transform:uppercase;color:#f8f8ff;margin-bottom:36px;
+background:rgba(124,58,237,0.12);font-weight:300;font-size:11px;
+letter-spacing:0.16em;text-transform:uppercase;color:var(–pb);margin-bottom:36px;
 animation:up .6s ease both;
 }
 .dot{width:6px;height:6px;border-radius:50%;background:var(–pb);animation:pulse 2s ease infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
 @keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 
-.h1{font-weight:400;font-size:clamp(3rem,10vw,7rem);letter-spacing:-0.03em;line-height:.93;margin-bottom:6px;animation:up .6s .1s ease both}
+.h1{font-weight:200;font-size:clamp(3rem,10vw,7rem);letter-spacing:-0.03em;line-height:.93;margin-bottom:6px;animation:up .6s .1s ease both}
 .h1 .flow{
 font-weight:800;display:block;
 background:linear-gradient(135deg,#a855f7,#6366f1 50%,#2dd4bf);
@@ -185,7 +185,7 @@ footer{border-top:1px solid var(–border);padding:32px 40px;display:flex;align-
 .fl a:hover{color:#f8f8ff}
 
 /* SCROLL REVEAL */
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease}
+.reveal{opacity:1;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease}
 .reveal.on{opacity:1;transform:translateY(0)}
 
 @media(max-width:640px){
@@ -221,7 +221,7 @@ footer{flex-direction:column;align-items:flex-start;padding:24px 20px}
 
 <section class="hero" aria-labelledby="hero-h">
   <div class="eyebrow"><span class="dot" aria-hidden="true"></span>Available on web &middot; iOS coming soon</div>
-<h1 id="hero-h" class="h1"><span style="font-size:0.45em;font-weight:300;color:rgba(248,248,255,0.55);letter-spacing:0.08em;text-transform:uppercase;display:block;margin-bottom:8px;">Focus. Time-block.</span><span class="flow">Flow.</span></h1>
+  <h1 id="hero-h" class="h1">Time-block.<br><span class="flow">Flow.</span></h1>
   <p class="hero-sub">FocusFlow turns your task list into a visual, timed focus session. Add tasks. Run the wheel. Track your streak.</p>
   <div class="hero-btns">
     <a href="https://focusflow.pvlabs.us" target="_blank" rel="noopener" class="btn-p">Start for Free ✦</a>
@@ -444,22 +444,12 @@ footer{flex-direction:column;align-items:flex-start;padding:24px 20px}
 </footer>
 
 <script>
-// Small delay ensures CSS has loaded, then reveal everything
-setTimeout(function() {
-  document.querySelectorAll('.reveal').forEach(function(el) {
-    el.classList.add('on');
+const io=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),i*55);io.unobserve(e.target)}
   });
-}, 100);
-
-// Also try on scroll for the nice cascade effect
-window.addEventListener('scroll', function() {
-  document.querySelectorAll('.reveal:not(.on)').forEach(function(el) {
-    var rect = el.getBoundingClientRect();
-    if(rect.top < window.innerHeight + 50) {
-      el.classList.add('on');
-    }
-  });
-}, {passive: true});
+},{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
 
 </body>
