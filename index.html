@@ -444,13 +444,22 @@ footer{flex-direction:column;align-items:flex-start;padding:24px 20px}
 </footer>
 
 <script>
-document.querySelectorAll('.reveal').forEach(el => el.classList.add('on'));
-const io=new IntersectionObserver(entries=>{
-  entries.forEach((e,i)=>{
-    if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),i*55);io.unobserve(e.target)}
+// Small delay ensures CSS has loaded, then reveal everything
+setTimeout(function() {
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    el.classList.add('on');
   });
-},{threshold:0.01,rootMargin:'0px 0px 50px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+}, 100);
+
+// Also try on scroll for the nice cascade effect
+window.addEventListener('scroll', function() {
+  document.querySelectorAll('.reveal:not(.on)').forEach(function(el) {
+    var rect = el.getBoundingClientRect();
+    if(rect.top < window.innerHeight + 50) {
+      el.classList.add('on');
+    }
+  });
+}, {passive: true});
 </script>
 
 </body>
